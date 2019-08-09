@@ -74,7 +74,7 @@ class UnivBody extends React.Component{
     }
 
     _LoadPostApi = () =>{
-        const url = '/univ_post/'+this.props.univ_id+'/'+this.props.board_type;
+        const url = '/api/univ_post/'+this.props.univ_id+'/'+this.props.board_type;
         return Axios.get(url,)
         .then((response)=>{
             return response.data.slice(this.state.initPostListIndex,this.state.postListIndex);

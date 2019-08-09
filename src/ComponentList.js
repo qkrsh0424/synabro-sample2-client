@@ -17,10 +17,14 @@ import PostPreview from './components/UnivPage/PostPreview';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
 
+//Page Error return
+import NotFound from './components/NotFound/NotFound'
+
 
 
 export {Nav, NavMenuList, ItemList};
 export {Main};
 export {UnivMain, UnivNav, UnivHome, UnivBody, PostPreview};
 export {Login,Signup};
+export {NotFound};
 

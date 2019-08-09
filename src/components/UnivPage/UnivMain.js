@@ -37,13 +37,13 @@ class UnivMain extends React.Component{
     }
 
     callApi = async()=>{
-        const response = await fetch('/univ_item/'+this.state.univ_id);
+        const response = await fetch('/api/univ_item/'+this.state.univ_id);
         const body = await response.json();
         return body;
     }
 
     callApiUniv = async()=>{
-        const response = await fetch('/univ/'+this.state.univ_id);
+        const response = await fetch('/api/univ/'+this.state.univ_id);
         const body = await response.json();
         return body;
     }

@@ -30,7 +30,7 @@ class UnivHome extends React.Component{
             univ_item_address = 10000;  //address 10000은 항상 서브 페이지의 홈을 의미함.
         }
 
-        const url = '/univ_bene/'+this.props.univ_id+'/boardType/'+univ_item_address+'/beneType/'+bene_type;
+        const url = '/api/univ_bene/'+this.props.univ_id+'/boardType/'+univ_item_address+'/beneType/'+bene_type;
         return Axios.get(url)
         .then((response)=>{
             return response.data;
@@ -169,7 +169,7 @@ class HomeNoticeArea extends React.Component{
         // const response = await fetch('/univ_post/'+this.props.univ_id+'/'+this.props.board_type);
         // const body = await response.json();
         // return body;
-        const url = '/univ_post/'+this.props.univ_id+'/'+this.props.board_type;
+        const url = '/api/univ_post/'+this.props.univ_id+'/'+this.props.board_type;
         return Axios.get(url)
         .then((response)=>{
             return response.data;

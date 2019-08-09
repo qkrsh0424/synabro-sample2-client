@@ -38,7 +38,7 @@ class ItemList extends React.Component {
   }
 
   callApi = async() =>{
-    const response = await fetch('/univ_item/'+this.props.univ_id);
+    const response = await fetch('/api/univ_item/'+this.props.univ_id);
     const body = await response.json();
     return body;
   }
