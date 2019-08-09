@@ -1,0 +1,25 @@
+@media screen and (max-width:568px){
+    .main_container{
+        padding:24px 8px !important;
+    }    
+}
+.main_container{
+    padding:24px;
+}
+
+.CarouselHeight{
+    height: 20vh;
+}
+
+.univ_text_color{
+    color: cadetblue;
+    font-weight: bold
+}
+.univ_text_color:hover{
+    color: cadetblue;
+    opacity: 0.7;
+}
+
+.post_list{
+    text-align: left;
+}

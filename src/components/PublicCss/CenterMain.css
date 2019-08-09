@@ -1,0 +1,11 @@
+.post_overflow{
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-wrap: break-word;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  /* line-height: 2; */
+  height: auto;
+  -webkit-line-clamp: 1;
+}
