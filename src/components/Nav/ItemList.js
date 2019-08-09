@@ -1,4 +1,5 @@
 import React from 'react';
+import Axios from 'axios';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -37,10 +38,15 @@ class ItemList extends React.Component {
     .catch(err=>console.log(err));
   }
 
-  callApi = async() =>{
-    const response = await fetch('/api/univ_item/'+this.props.univ_id);
-    const body = await response.json();
-    return body;
+  callApi(){
+    // const response = await fetch('/api/univ_item/'+this.props.univ_id);
+    // const body = await response.json();
+    // return body;
+    const url = '/api/univ_item/'+this.props.univ_id;
+        return Axios.get(url,)
+        .then((response)=>{
+            return response.data;
+        });
   }
 
   handleClick = () => {

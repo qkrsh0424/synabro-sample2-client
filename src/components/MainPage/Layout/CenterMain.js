@@ -1,4 +1,5 @@
 import React from 'react';
+import Axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
@@ -59,10 +60,15 @@ class Body extends React.Component{
             .catch(err => console.log(err))
     }
 
-    callApi = async() => {
-        const response = await fetch('/api/univ_post/u/'+this.state.univ.univ_id);
-        const body = await response.json();
-        return body;
+    callApi(){
+        // const response = await fetch('/api/univ_post/u/'+this.state.univ.univ_id);
+        // const body = await response.json();
+        // return body;
+        const url = '/api/univ_post/u/'+this.state.univ.univ_id;
+        return Axios.get(url,)
+        .then((response)=>{
+            return response.data;
+        });
     }
 
     render(){
@@ -109,10 +115,15 @@ class CenterMain extends React.Component{
             // console.log(this.state.univ);
     }
 
-    callApi = async() => {
-        const response = await fetch('/api/univ');
-        const body = await response.json();
-        return body;
+    callApi(){
+        // const response = await fetch('/api/univ');
+        // const body = await response.json();
+        // return body;
+        const url = '/api/univ';
+        return Axios.get(url,)
+        .then((response)=>{
+            return response.data;
+        });
     }
 
     render(){

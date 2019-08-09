@@ -1,4 +1,5 @@
 import React from 'react';
+import Axios from 'axios';
 import ReactPullToRefresh from 'react-pull-to-refresh';
 import '../PublicCss/UnivMain.css';
 
@@ -36,16 +37,28 @@ class UnivMain extends React.Component{
         .catch(err=>{console.log(err)});
     }
 
-    callApi = async()=>{
-        const response = await fetch('/api/univ_item/'+this.state.univ_id);
-        const body = await response.json();
-        return body;
+    // callApi = async()=>{
+    //     const response = await fetch('/api/univ_item/'+this.state.univ_id);
+    //     const body = await response.json();
+    //     return body;
+    // }
+    callApi(){
+        const url = '/api/univ_item/'+this.state.univ_id;
+        return Axios.get(url,)
+        .then((response)=>{
+            return response.data;
+        });
     }
 
     callApiUniv = async()=>{
-        const response = await fetch('/api/univ/'+this.state.univ_id);
-        const body = await response.json();
-        return body;
+        // const response = await fetch('/api/univ/'+this.state.univ_id);
+        // const body = await response.json();
+        // return body;
+        const url = '/api/univ/'+this.state.univ_id;
+        return Axios.get(url,)
+        .then((response)=>{
+            return response.data;
+        });
     }
 
     _scrollUp(){

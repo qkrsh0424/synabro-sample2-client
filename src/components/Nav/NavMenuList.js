@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Axios from 'axios';
 import {
     Divider,Popover,List,ListItem,ListItemIcon,ListItemText
 } from '../../UiCore';
@@ -24,10 +24,15 @@ class NavMenuList extends React.Component{
             .catch(err => console.log(err))
     }
 
-    callApi = async() => {
-        const response = await fetch('/api/univ');
-        const body = await response.json();
-        return body;
+    callApi(){
+        // const response = await fetch('/api/univ');
+        // const body = await response.json();
+        // return body;
+        const url = '/api/univ';
+        return Axios.get(url,)
+        .then((response)=>{
+            return response.data;
+        });
     }
 
     handleClick = (id,title,event) => {
