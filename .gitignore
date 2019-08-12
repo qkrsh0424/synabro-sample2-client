@@ -22,8 +22,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+#설정 필요.
 /src/callApi
-
+#설정 필요.
 /src/Handler
-
+#설정 필요.
 /AuthKey
