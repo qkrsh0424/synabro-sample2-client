@@ -3,6 +3,11 @@ import Axios from 'axios';
 import '../PublicCss/UnivBody.css';
 import '../PublicCss/SlideAnimation.css';
 
+//Call Apis
+import {
+    univ_postRouteApi
+} from '../../callApi/callApi';
+
 //import Cores
 import {
     CircularProgress,
@@ -27,11 +32,13 @@ class UnivBody extends React.Component{
             postVals:"",
             initPostListIndex:0,
             postListIndex:20,
+            isLoading:true,
         }
 
         this.listStyleHandle = this.listStyleHandle.bind(this);
         this.calculateTime = this.calculateTime.bind(this);
         this._infiniteScroll = this._infiniteScroll.bind(this);
+        this._refresh_post = this._refresh_post.bind(this);
     }
 
     calculateTime(date1,date2){
@@ -70,19 +77,27 @@ class UnivBody extends React.Component{
 
     componentWillUnmount(){
         this._isMounted = false;
-        
     }
 
     _LoadPostApi = () =>{
-        const url = '/api/univ_post/'+this.props.univ_id+'/'+this.props.board_type;
-        return Axios.get(url,)
-        .then((response)=>{
-            return response.data.slice(this.state.initPostListIndex,this.state.postListIndex);
+        // const url = '/api/univ_post/'+this.props.univ_id+'/'+this.props.board_type;
+        // return Axios.get(url,)
+        // .then((response)=>{
+        //     return response.data.slice(this.state.initPostListIndex,this.state.postListIndex);
+        // });
+        return univ_postRouteApi(this.props.univ_id, this.props.board_type)
+        .then(data=>{
+            return data.slice(this.state.initPostListIndex,this.state.postListIndex);
+        })
+        .catch(err=>{
+            console.log(err);
         });
     }
 
     callPostApi = ()=>{
-        return this._LoadPostApi().then(res=>this.setState({postVals:res})).catch(err=>console.log(err));
+        return this._LoadPostApi().then(res=>{
+            this.setState({postVals:res})
+        }).catch(err=>console.log(err));
     }
 
     listStyleHandle(listStyleIndex){
@@ -103,10 +118,19 @@ class UnivBody extends React.Component{
         let clientHeight = document.documentElement.clientHeight;
 
         if(scrollTop + clientHeight === scrollHeight){
-            console.log(scrollHeight);
+            if(this.state.postVals[(this.state.postListIndex-1)]===undefined){
+                this.setState({isLoading:false});
+            }
             this.setState({postListIndex:this.state.postListIndex+10});
+            this.callPostApi();
         }
+    }
 
+    _refresh_post(){
+        // window.location.reload();
+        this.setState({isLoading:true});
+        this.setState({postListIndex:20});
+        document.documentElement.scrollTop=document.body.scrollTop=0;
         this.callPostApi();
     }
 
@@ -123,6 +147,7 @@ class UnivBody extends React.Component{
         if(this.state.liststyle===false){
             listform.push(
                 <UnivPostModuleStyle
+                    key="module"
                     noticeIcon={noticeIcon}
                     postVals = {this.state.postVals} 
                     calcTime ={this.calculateTime}
@@ -131,7 +156,8 @@ class UnivBody extends React.Component{
             );
         }else{
             listform.push(
-                <UnivPostListStyle 
+                <UnivPostListStyle
+                    key="list"
                     noticeIcon={noticeIcon}
                     postVals = {this.state.postVals}
                     calcTime ={this.calculateTime}
@@ -141,26 +167,22 @@ class UnivBody extends React.Component{
         }
         return(
             <div>
-                <div class="board_card py-3 bg-#ffffff">
-                    <div class="container">
-                        <div class="jumbotron">
+                <div className="board_card py-3 bg-#ffffff">
+                    <div className="container">
+                        <div className="jumbotron">
 
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h4 class="clearfix text-danger">
+                        <div className="row">
+                            <div className="col-md-12">
+                                <h4 className="clearfix text-danger">
                                     공지사항
-                                    <button class="float-right btn btn-light active" id="listStyle_list" onClick={()=>this.listStyleHandle("list")}><ViewList_icon/></button>
-                                    <button class="float-right btn btn-light" id="listStyle_module" onClick={()=>this.listStyleHandle("module")}><ViewModule_icon/></button>
+                                    <button className="float-right btn btn-light active" id="listStyle_list" onClick={()=>this.listStyleHandle("list")}><ViewList_icon/></button>
+                                    <button className="float-right btn btn-light" id="listStyle_module" onClick={()=>this.listStyleHandle("module")}><ViewModule_icon/></button>
                                 </h4>
                                 {listform}
-                                {this.state.postVals?
-                                    <div>
-                                        <h6 className="text-center">마지막 포스터 입니다.</h6>
-                                        <button type="button" className="btn btn-info btn-lg btn-block shadow-sm" onClick={()=>window.location.reload()}>페이지 새로고침</button>
-                                    </div>
-                                    :<p className="text-center"><CircularProgress color="secondary"/></p>}
-                                
+                                 {this.state.isLoading?<div className="text-center"><CircularProgress color="secondary"/></div>
+                                 :<div><p>마지막 포스터 입니다.</p><button className="btn btn-info btn-lg btn-block shadow-sm" onClick={this._refresh_post}>페이지 새로고침</button></div>
+                                 }
                             </div>  
                         </div>
                     </div>
@@ -188,25 +210,24 @@ class UnivPostListStyle extends React.Component{
         
         return(
             <div>
-                <div class="table-body animate slideIn clearfix">
+                <div className="table-body animate slideIn clearfix">
                     {this.props.postVals?this.props.postVals.map((rows,index)=>{
                         var currentDate = new Date();
                         var createDate = new Date(rows.post_created);
-                        // if(index<this.props.postListIndex){
                             return(
-                                <div class="table-bar p-3 mb-2 shadow-sm hover_animate">
-                                    <a href="/" class="text-dark">
-                                        <div class="table-bar_column clearfix">
+                                <div className="table-bar p-3 mb-2 shadow-sm hover_animate" key={index}>
+                                    <a href="/" className="text-dark">
+                                        <div className="table-bar_column clearfix">
                                             {/* <Notification_icon color="secondary"/> */}
                                             {this.props.noticeIcon}
-                                            <span class="table-bar_writer">{index+1}작성자: 학생회</span>
-                                            <span class="table-bar_time float-right">{this.props.calcTime(currentDate,createDate)}</span>
+                                            <span className="table-bar_writer">{index+1}작성자: 학생회</span>
+                                            <span className="table-bar_time float-right">{this.props.calcTime(currentDate,createDate)}</span>
                                         </div>
-                                        <div class="table-bar_column">
-                                            <p class="text">{rows.post_topic}</p>
+                                        <div className="table-bar_column">
+                                            <p className="text">{rows.post_topic}</p>
                                         </div>
                                     </a>
-                                    <div class="table-bar_column text-right">
+                                    <div className="table-bar_column text-right">
                                         <a href="#" className="text-secondary"><ThumbUp_icon/>0</a>
                                         &nbsp;
                                         <a href="#" className="text-secondary"><Comment_icon/>0</a>
@@ -215,7 +236,6 @@ class UnivPostListStyle extends React.Component{
                                     </div>
                                 </div>
                             );
-                        // }
                     }):""}
                 </div>
             </div>
@@ -226,34 +246,34 @@ class UnivPostListStyle extends React.Component{
 class UnivPostModuleStyle extends React.Component{
     render(){
         return(
-            <div class="wrapper_notice animate slideIn">
+            <div className="wrapper_notice animate slideIn">
                 {this.props.postVals?this.props.postVals.map((rows,index)=>{
                     var currentDate = new Date();
                     var createDate = new Date(rows.post_created);
-                    if(index<this.props.postListIndex){
+                    // if(index<this.props.postListIndex){
                         return(
-                            <a href="/" class="card card_notice_t hover_animate">
-                                <img src="https://synabrodemo.s3.ap-northeast-2.amazonaws.com/bigbene/logomain.png" class="card-img-top car-img-top_t" alt="..."/>
-                                <div class="card_header_t  pt-0 ml-1 mr-3 text-dark">
+                            <a href="/" className="card card_notice_t hover_animate" key={index}>
+                                <img src="https://synabrodemo.s3.ap-northeast-2.amazonaws.com/bigbene/logomain.png" className="card-img-top car-img-top_t" alt="..."/>
+                                <div className="card_header_t  pt-0 ml-1 mr-3 text-dark">
                                     {/* <Notification_icon color="secondary"/>{rows.post_topic} */}
                                     {this.props.noticeIcon}{rows.post_topic}
                                 </div>
-                                <div class="card-body_t mt-0 ml-1 mr-1">
-                                    <div class="card_writer">
-                                        <p class="text-muted">작성자: 학생회</p>
+                                <div className="card-body_t mt-0 ml-1 mr-1">
+                                    <div className="card_writer">
+                                        <p className="text-muted">작성자: 학생회</p>
                                     </div>
 
-                                    <div class="card_footer text-muted">
-                                        <p class="view text-muted">조회수 154회</p>
+                                    <div className="card_footer text-muted">
+                                        <p className="view text-muted">조회수 154회</p>
                                     </div>
-                                    <div class="card_comment">
-                                        <p class="comment text-muted">댓글 3개</p>
-                                        <p class="view time text-muted">{this.props.calcTime(currentDate,createDate)}</p>
+                                    <div className="card_comment">
+                                        <p className="comment text-muted">댓글 3개</p>
+                                        <p className="view time text-muted">{this.props.calcTime(currentDate,createDate)}</p>
                                     </div>
                                 </div>
                             </a>
                         );
-                    }
+                    // }
                     
                 }):""}
             </div>

@@ -230,7 +230,6 @@ export default function Nav(props) {
 
             <Route exact path="/univ/:univ_id" component={UnivMain}/>
             <Route exact path="/univ/:univ_id/:board_type" component={UnivMain}/>
-            <Route exact path="/*" component={NotFound}/>
         </main>
       </Router>
     );

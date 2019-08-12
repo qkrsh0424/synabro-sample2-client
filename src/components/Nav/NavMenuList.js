@@ -1,5 +1,11 @@
 import React from 'react';
-import Axios from 'axios';
+
+//Call Apis
+import {
+    univRouteApi
+} from '../../callApi/callApi';
+
+//Call UiCore
 import {
     Divider,Popover,List,ListItem,ListItemIcon,ListItemText
 } from '../../UiCore';
@@ -19,21 +25,25 @@ class NavMenuList extends React.Component{
         }
     }
     componentDidMount(){
-        this.callApi()
+        univRouteApi()
             .then(res => this.setState({univ: res}))
             .catch(err => console.log(err))
     }
 
-    callApi(){
-        // const response = await fetch('/api/univ');
-        // const body = await response.json();
-        // return body;
-        const url = '/api/univ';
-        return Axios.get(url,)
-        .then((response)=>{
-            return response.data;
-        });
-    }
+    // callApi(){
+    //     // const response = await fetch('/api/univ');
+    //     // const body = await response.json();
+    //     // return body;
+    //     const url = '/api/univ';
+    //     return Axios.get(url,{
+    //         headers:{
+    //             'Authorization': accessApiKey.accessApiKey
+    //         }
+    //     })
+    //     .then((response)=>{
+    //         return response.data;
+    //     });
+    // }
 
     handleClick = (id,title,event) => {
         this.setState({

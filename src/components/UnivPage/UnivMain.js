@@ -3,6 +3,12 @@ import Axios from 'axios';
 import ReactPullToRefresh from 'react-pull-to-refresh';
 import '../PublicCss/UnivMain.css';
 
+//Call Apis
+import {
+    univRouteApi,
+    univ_itemRouteApi,
+} from '../../callApi/callApi';
+
 import {
     ArrowUp_icon
 } from '../../UiIcons';
@@ -28,11 +34,11 @@ class UnivMain extends React.Component{
     }
 
     componentDidMount(){
-        this.callApi()
+        univ_itemRouteApi(this.state.univ_id)
         .then(res=>{this.setState({univ_item:res})})
         .catch(err=>{console.log(err)});
         
-        this.callApiUniv()
+        univRouteApi(this.state.univ_id)
         .then(res=>{this.setState({univ:res})})
         .catch(err=>{console.log(err)});
     }
@@ -42,24 +48,24 @@ class UnivMain extends React.Component{
     //     const body = await response.json();
     //     return body;
     // }
-    callApi(){
-        const url = '/api/univ_item/'+this.state.univ_id;
-        return Axios.get(url,)
-        .then((response)=>{
-            return response.data;
-        });
-    }
+    // callApi(){
+    //     const url = '/api/univ_item/'+this.state.univ_id;
+    //     return Axios.get(url,)
+    //     .then((response)=>{
+    //         return response.data;
+    //     });
+    // }
 
-    callApiUniv = async()=>{
-        // const response = await fetch('/api/univ/'+this.state.univ_id);
-        // const body = await response.json();
-        // return body;
-        const url = '/api/univ/'+this.state.univ_id;
-        return Axios.get(url,)
-        .then((response)=>{
-            return response.data;
-        });
-    }
+    // callApiUniv = async()=>{
+    //     // const response = await fetch('/api/univ/'+this.state.univ_id);
+    //     // const body = await response.json();
+    //     // return body;
+    //     const url = '/api/univ/'+this.state.univ_id;
+    //     return Axios.get(url,)
+    //     .then((response)=>{
+    //         return response.data;
+    //     });
+    // }
 
     _scrollUp(){
         document.documentElement.scrollTop=document.body.scrollTop=0;

@@ -1,11 +1,16 @@
 import React from 'react';
-import Axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import {Link} from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import '../../PublicCss/CenterMain.css';
+
+//Call Apis
+import {
+    univRouteApi,
+    univ_postRouteApi,
+} from '../../../callApi/callApi';
 
 // import Bene1 from '../../../images/bene/image1.jpeg';
 // import Bene2 from '../../../images/bene/image2.jpeg';
@@ -55,20 +60,9 @@ class Body extends React.Component{
     }
 
     componentDidMount(){
-        this.callApi()
+        univ_postRouteApi(this.state.univ.univ_id)
             .then(res => this.setState({univ_post: res}))
             .catch(err => console.log(err))
-    }
-
-    callApi(){
-        // const response = await fetch('/api/univ_post/u/'+this.state.univ.univ_id);
-        // const body = await response.json();
-        // return body;
-        const url = '/api/univ_post/u/'+this.state.univ.univ_id;
-        return Axios.get(url,)
-        .then((response)=>{
-            return response.data;
-        });
     }
 
     render(){
@@ -109,21 +103,9 @@ class CenterMain extends React.Component{
     }
 
     componentDidMount(){
-        this.callApi()
+        univRouteApi()
             .then(res => this.setState({univ: res}))
             .catch(err => console.log(err));
-            // console.log(this.state.univ);
-    }
-
-    callApi(){
-        // const response = await fetch('/api/univ');
-        // const body = await response.json();
-        // return body;
-        const url = '/api/univ';
-        return Axios.get(url,)
-        .then((response)=>{
-            return response.data;
-        });
     }
 
     render(){

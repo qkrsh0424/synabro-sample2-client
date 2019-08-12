@@ -3,6 +3,10 @@ import Axios from 'axios';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
+//Call Apis
+import {
+  univ_itemRouteApi
+} from '../../callApi/callApi';
 //Core Load
 import {
   ListSubheader,List,ListItem,ListItemText
@@ -33,20 +37,9 @@ class ItemList extends React.Component {
   }
 
   componentDidMount(){
-    this.callApi()
+    univ_itemRouteApi(this.props.univ_id)
     .then(res=>this.setState({univ_item:res}))
     .catch(err=>console.log(err));
-  }
-
-  callApi(){
-    // const response = await fetch('/api/univ_item/'+this.props.univ_id);
-    // const body = await response.json();
-    // return body;
-    const url = '/api/univ_item/'+this.props.univ_id;
-        return Axios.get(url,)
-        .then((response)=>{
-            return response.data;
-        });
   }
 
   handleClick = () => {

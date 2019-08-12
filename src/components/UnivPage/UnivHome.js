@@ -3,6 +3,10 @@ import '../PublicCss/UnivHome.css';
 import '../PublicCss/SlideAnimation.css';
 import Axios from 'axios';
 
+import {
+    univ_postRouteApi
+} from '../../callApi/callApi'
+
 import {Link} from '../../UiCore';
 
 import {PostPreview} from '../../ComponentList';
@@ -165,16 +169,10 @@ class HomeNoticeArea extends React.Component{
         .catch(err => console.log(err));
     }
     
-    callApi = async() =>{
-        // const response = await fetch('/univ_post/'+this.props.univ_id+'/'+this.props.board_type);
-        // const body = await response.json();
-        // return body;
-        const url = '/api/univ_post/'+this.props.univ_id+'/'+this.props.board_type;
-        return Axios.get(url)
-        .then((response)=>{
-            return response.data;
-        });
+    callApi(){
+        return univ_postRouteApi(this.props.univ_id,this.props.board_type);
     }
+    
     calculateTime(date1,date2){
         var Time1 = date1.getTime();
         var Time2 = date2.getTime();
